@@ -72,7 +72,7 @@ BEGIN
             VALUE "FileDescription", "VirtualDJ Video Transition"
             VALUE "FileVersion", "3, 0, 0, 0"
             VALUE "InternalName", "Slide3D"
-            VALUE "LegalCopyright", "Copyright (C) 2021 DJ CEL"
+            VALUE "LegalCopyright", "Copyright (C) 2025 djcel"
             VALUE "OriginalFilename", "Slide3D"
             VALUE "ProductName", "VirtualDJ"
             VALUE "ProductVersion", "8, 0, 0, 0"
