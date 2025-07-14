@@ -5,6 +5,8 @@
 CSlide3D8::CSlide3D8()
 {
 	pD3DDevice = nullptr;
+	pD3DDeviceContext = nullptr;
+	pD3DRenderTargetView = nullptr;
 	ZeroMemory(m_DefaultVertices, 2 * 4 * sizeof(TVertex8));
 	ZeroMemory(m_Vertices, 2 * 4 * sizeof(TVertex8));
 	m_Direct3D_On = false;
@@ -58,6 +60,8 @@ HRESULT VDJ_API CSlide3D8::OnDeviceInit()
 //---------------------------------------------------------------------------------------------
 HRESULT VDJ_API CSlide3D8::OnDeviceClose()
 {
+	SAFE_RELEASE(pD3DRenderTargetView);
+	SAFE_RELEASE(pD3DDeviceContext);
 	pD3DDevice = nullptr; //can no longer be used when device closed
 	m_Direct3D_On = false;
 	return S_OK;
@@ -81,9 +85,18 @@ HRESULT VDJ_API CSlide3D8::OnDraw(float crossfader)
 	//hr = GetTexture(VdjVideoEngineDirectX11, 1, (void**) &pTextureView1);
 	//hr = GetTexture(VdjVideoEngineDirectX11, 2, (void**) &pTextureView2);
 
-	hr = Compose(crossfader);
+	if (!pD3DDevice) return S_FALSE;
 
-	return hr;
+	pD3DDevice->GetImmediateContext(&pD3DDeviceContext);
+	if (!pD3DDeviceContext) return S_FALSE;
+	
+	pD3DDeviceContext->OMGetRenderTargets(1, &pD3DRenderTargetView, nullptr);
+	if (!pD3DRenderTargetView) return S_FALSE;
+	
+	hr = Rendering_D3D11(pD3DDevice, pD3DDeviceContext, pD3DRenderTargetView, crossfader);
+	if (hr != S_OK) return S_FALSE;
+	
+	return S_OK;
 }
 //---------------------------------------------------------------------------------------------
 void CSlide3D8::OnResizeVideo()
@@ -92,7 +105,7 @@ void CSlide3D8::OnResizeVideo()
 	m_Height = height;
 }
 //---------------------------------------------------------------------------------------------
-HRESULT CSlide3D8::Compose(float crossfader)
+HRESULT CSlide3D8::Rendering_D3D11(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RenderTargetView* pRenderTargetView, float crossfader)
 {
 	HRESULT hr=S_FALSE;
 
