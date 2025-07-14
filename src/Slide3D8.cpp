@@ -141,7 +141,7 @@ HRESULT CSlide3D8::Rendering_D3D11(ID3D11Device* pDevice, ID3D11DeviceContext* p
 		//Video 2
 		m_Vertices[1][0].position.x = 0.5f * m_Width;
 		m_Vertices[1][0].position.y = 0.25f * m_Height;
-        m_Vertices[1][0].color = D3DCOLOR_RGBA(255,255,255,alpha);
+        	m_Vertices[1][0].color = D3DCOLOR_RGBA(255,255,255,alpha);
 
 		m_Vertices[1][1].position.x = 1.0f * m_Width;
 		m_Vertices[1][1].position.y = 0.25f * m_Height;
