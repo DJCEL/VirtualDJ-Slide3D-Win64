@@ -54,7 +54,9 @@ HRESULT VDJ_API CSlide3D8::OnDeviceInit()
 	hr = GetDevice(VdjVideoEngineDirectX11, (void**)&pD3DDevice);
 	if (hr != S_OK || pD3DDevice == nullptr) return S_FALSE;
 
-
+	hr = Initialize_D3D11(pD3DDevice);
+	if (hr != S_OK) return S_FALSE;
+	
 	return S_OK;
 }
 //---------------------------------------------------------------------------------------------
@@ -103,6 +105,11 @@ void CSlide3D8::OnResizeVideo()
 {
 	m_Width = width;
 	m_Height = height;
+}
+//-----------------------------------------------------------------------
+HRESULT CSlide3D8::Initialize_D3D11(ID3D11Device* pDevice)
+{
+	return S_OK;
 }
 //---------------------------------------------------------------------------------------------
 HRESULT CSlide3D8::Rendering_D3D11(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RenderTargetView* pRenderTargetView, float crossfader)
