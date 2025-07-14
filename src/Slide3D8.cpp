@@ -202,11 +202,11 @@ else
 return S_OK;
 }
 //---------------------------------------------------------------------------------------------
-HRESULT CSlide3D8::RenderSurface(int deck, bool bDefault)
+HRESULT CSlide3D8::RenderSurface(int deck, bool bDefaultVertices)
 {	
 	HRESULT hr = S_OK;
 
-	if (bDefault==true) 
+	if (bDefaultVertices==true) 
 	{
 		hr = DrawDeck(deck, NULL); // (pass NULL to DrawDeck() to use the default vertices)
 	}
