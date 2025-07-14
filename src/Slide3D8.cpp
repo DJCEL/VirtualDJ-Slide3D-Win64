@@ -80,8 +80,11 @@ HRESULT VDJ_API CSlide3D8::OnDraw(float crossfader)
 		OnResizeVideo();
 	}
 
-	memcpy(m_Vertices[0], GetVertices(1), 4 * sizeof(TVertex8));
-	memcpy(m_Vertices[1], GetVertices(2), 4 * sizeof(TVertex8));
+	memcpy(m_DefaultVertices[0], GetVertices(1), 4 * sizeof(TVertex8));
+	memcpy(m_DefaultVertices[1], GetVertices(2), 4 * sizeof(TVertex8));
+
+	memcpy(m_Vertices[0], m_DefaultVertices[0], 4 * sizeof(TVertex8));
+	memcpy(m_Vertices[1], m_DefaultVertices[1], 4 * sizeof(TVertex8));
 	TVertex8* pDoubleVertices[2] = { m_Vertices[0], m_Vertices[1] };
 
 	// GetTexture() doesn't AddRef(), so we don't need to release later
@@ -207,59 +210,59 @@ HRESULT CSlide3D8::RenderSurface(int deck, bool bDefaultVertices)
 {	
 	HRESULT hr = S_OK;
 
-	if (bDefaultVertices==true) 
+	if (bDefaultVertices==true)
 	{
-		hr = DrawDeck(deck, NULL); // (pass NULL to DrawDeck() to use the default vertices)
+		hr = DrawDeck(deck, nullptr); // (pass NULL to DrawDeck() to use the default vertices)
 	}
 	else 
 	{
-		VideoScaling(deck);
-		hr = DrawDeck(deck, m_Vertices[deck-1]);
+		VideoScaling(m_Vertices[deck - 1], m_DefaultVertices[deck - 1]);
+		hr = DrawDeck(deck, m_Vertices[deck - 1]);
+
+		memcpy(m_Vertices[deck - 1], m_DefaultVertices[deck - 1], 4 * sizeof(TVertex8));
 	}
 
 	return hr;
 }
 //---------------------------------------------------------------------------------------------
-void CSlide3D8::VideoScaling(int deck)
+void CSlide3D8::VideoScaling(TVertex8* vertices, TVertex8* DefaultVertices)
 {
-	float WidthOriginalVideo, HeightOriginalVideo;
+	float WidthOriginalVideo;
+	float HeightOriginalVideo;
 	float WidthVideo, HeightVideo;
 	float NewWidthVideo, NewHeightVideo;
-	float RatioOriginalVideo;
 	bool b_CropVideoW,b_CropVideoH;
 	float dx,dy;
 
-	memcpy(m_DefaultVertices[deck-1],GetVertices(deck),4*sizeof(TVertex8));
+	WidthOriginalVideo = DefaultVertices[1].position.x - DefaultVertices[0].position.x;
+	HeightOriginalVideo = DefaultVertices[3].position.y - DefaultVertices[0].position.y;
 
-	WidthOriginalVideo = m_DefaultVertices[deck-1][1].position.x - m_DefaultVertices[deck-1][0].position.x;
-	HeightOriginalVideo = m_DefaultVertices[deck-1][3].position.y - m_DefaultVertices[deck-1][0].position.y;
+	b_CropVideoW = (WidthOriginalVideo != float(m_Width));
+	b_CropVideoH = (HeightOriginalVideo != float(m_Height));
 
-    b_CropVideoW = (WidthOriginalVideo !=  float(m_Width));
-	b_CropVideoH  = (HeightOriginalVideo !=  float(m_Height));
+	WidthVideo = vertices[1].position.x - vertices[0].position.x;
+	HeightVideo = vertices[3].position.y - vertices[0].position.y;
 
-	RatioOriginalVideo = HeightOriginalVideo / WidthOriginalVideo;
-
-	WidthVideo = m_Vertices[deck-1][1].position.x - m_Vertices[deck-1][0].position.x;
-	HeightVideo = m_Vertices[deck-1][3].position.y - m_Vertices[deck-1][0].position.y;
 
 	if (b_CropVideoW)
 	{
-		NewWidthVideo = HeightVideo / RatioOriginalVideo;
+		NewWidthVideo = HeightVideo / HeightOriginalVideo * WidthOriginalVideo;
 		dx = (WidthVideo - NewWidthVideo) * 0.5f;
 
-		m_Vertices[deck-1][0].position.x += dx;
-		m_Vertices[deck-1][1].position.x -= dx;
-		m_Vertices[deck-1][2].position.x -= dx;
-		m_Vertices[deck-1][3].position.x += dx;
+		vertices[0].position.x += dx;
+		vertices[1].position.x -= dx;
+		vertices[2].position.x -= dx;
+		vertices[3].position.x += dx;
 	}
-	else if (b_CropVideoH)
+
+	if (b_CropVideoH)
 	{
-		NewHeightVideo = WidthVideo * RatioOriginalVideo;
+		NewHeightVideo = WidthVideo / WidthOriginalVideo * HeightOriginalVideo;
 		dy = (HeightVideo - NewHeightVideo) * 0.5f;
 	
-		m_Vertices[deck-1][0].position.y += dy;
-		m_Vertices[deck-1][1].position.y += dy;
-		m_Vertices[deck-1][2].position.y -= dy;
-		m_Vertices[deck-1][3].position.y -= dy;
+		vertices[0].position.y += dy;
+		vertices[1].position.y += dy;
+		vertices[2].position.y -= dy;
+		vertices[3].position.y -= dy;
 	}
 }
