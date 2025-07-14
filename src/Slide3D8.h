@@ -24,7 +24,8 @@ class CSlide3D8 : public IVdjPluginVideoTransition8
 
 	private:
 		void OnResizeVideo();
-		HRESULT Compose(float crossfader);
+		HRESULT Initialize_D3D11(ID3D11Device* pDevice);
+		HRESULT Rendering_D3D11(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RenderTargetView* pRenderTargetView, float crossfader);
 		HRESULT RenderSurface(int deck, bool bDefault);
 		void VideoScaling(int deck);
 
