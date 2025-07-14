@@ -3,7 +3,7 @@
 
 
 #include "VdjVideo8.h"
-#include <D3D11_4.h>
+#include <d3d11.h>
 #include <atlbase.h> //we use atl for the CComPtr smart pointer, but this is optional
 
 #pragma comment (lib, "D3D11.lib")
@@ -29,6 +29,8 @@ class CSlide3D8 : public IVdjPluginVideoTransition8
 		void VideoScaling(int deck);
 
 		ID3D11Device* pD3DDevice;
+		ID3D11DeviceContext* pD3DDeviceContext;
+		ID3D11RenderTargetView* pD3DRenderTargetView;
 		TVertex8 m_DefaultVertices[2][4];
 		TVertex8 m_Vertices[2][4];
 		bool m_Direct3D_On;
