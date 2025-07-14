@@ -77,6 +77,8 @@ HRESULT VDJ_API CSlide3D8::OnDraw(float crossfader)
 
 	//ID3D11ShaderResourceView *pTextureView1 = nullptr;
 	//ID3D11ShaderResourceView *pTextureView2 = nullptr;
+
+	// GetTexture() doesn't AddRef(), so we don't need to release later
 	//hr = GetTexture(VdjVideoEngineDirectX11, 1, (void**) &pTextureView1);
 	//hr = GetTexture(VdjVideoEngineDirectX11, 2, (void**) &pTextureView2);
 
