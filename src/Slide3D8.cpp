@@ -66,6 +66,8 @@ HRESULT VDJ_API CSlide3D8::OnDeviceClose()
 HRESULT VDJ_API CSlide3D8::OnDraw(float crossfader)
 {
 	HRESULT hr = S_FALSE;
+	//ID3D11ShaderResourceView *pTextureView1 = nullptr;
+	//ID3D11ShaderResourceView *pTextureView2 = nullptr;
 
 	if (width != m_Width || height != m_Height)
 	{
@@ -74,9 +76,6 @@ HRESULT VDJ_API CSlide3D8::OnDraw(float crossfader)
 
 	memcpy(m_Vertices[0], GetVertices(1), 4 * sizeof(TVertex8));
 	memcpy(m_Vertices[1], GetVertices(2), 4 * sizeof(TVertex8));
-
-	//ID3D11ShaderResourceView *pTextureView1 = nullptr;
-	//ID3D11ShaderResourceView *pTextureView2 = nullptr;
 
 	// GetTexture() doesn't AddRef(), so we don't need to release later
 	//hr = GetTexture(VdjVideoEngineDirectX11, 1, (void**) &pTextureView1);
