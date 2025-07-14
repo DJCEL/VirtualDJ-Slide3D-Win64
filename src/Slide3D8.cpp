@@ -57,6 +57,7 @@ HRESULT VDJ_API CSlide3D8::OnDeviceInit()
 //---------------------------------------------------------------------------------------------
 HRESULT VDJ_API CSlide3D8::OnDeviceClose()
 {
+	pD3DDevice = nullptr; //can no longer be used when device closed
 	m_Direct3D_On = false;
 	return S_OK;
 }
@@ -100,16 +101,16 @@ HRESULT CSlide3D8::Compose(float crossfader)
 
 		// Video 1
 		m_Vertices[0][0].position.x = 0.0f * m_Width;
-		m_Vertices[0][0].position.y = (0.0f + compressor_rate * 0.25f ) * m_Height; // de 0 à 0.25;
+		m_Vertices[0][0].position.y = (0.0f + compressor_rate * 0.25f ) * m_Height; // de 0 Ã  0.25;
 
-		m_Vertices[0][1].position.x = (1.0f - compressor_rate * 0.5f) * m_Width; // de 1 à 0.5
-		m_Vertices[0][1].position.y = (0.0f + compressor_rate * 0.25f) * m_Height; // de 0 à 0.25
+		m_Vertices[0][1].position.x = (1.0f - compressor_rate * 0.5f) * m_Width; // de 1 Ã  0.5
+		m_Vertices[0][1].position.y = (0.0f + compressor_rate * 0.25f) * m_Height; // de 0 Ã  0.25
 
-		m_Vertices[0][2].position.x = (1.0f - compressor_rate * 0.5f) * m_Width; // de 1 à 0.5
-		m_Vertices[0][2].position.y = (1.0f - compressor_rate * 0.25f) * m_Height; // de 1 à 0.75;
+		m_Vertices[0][2].position.x = (1.0f - compressor_rate * 0.5f) * m_Width; // de 1 Ã  0.5
+		m_Vertices[0][2].position.y = (1.0f - compressor_rate * 0.25f) * m_Height; // de 1 Ã  0.75;
 
 		m_Vertices[0][3].position.x = 0.0f * m_Width ;
-		m_Vertices[0][3].position.y = (1.0f - compressor_rate * 0.25f) * m_Height; // de 1 à 0.75;
+		m_Vertices[0][3].position.y = (1.0f - compressor_rate * 0.25f) * m_Height; // de 1 Ã  0.75;
 
 		//Video 2
 		m_Vertices[1][0].position.x = 0.5f * m_Width;
@@ -155,17 +156,17 @@ HRESULT CSlide3D8::Compose(float crossfader)
 		m_Vertices[0][3].color = D3DCOLOR_RGBA(255,255,255,alpha);
 
 		// Video 2
-		m_Vertices[1][0].position.x=(0.0f + compressor_rate * 0.5f) * m_Width; // de 0.5 à 0.0
-		m_Vertices[1][0].position.y=(0.0f + compressor_rate * 0.25f) * m_Height; // de 0.25 à 0.0
+		m_Vertices[1][0].position.x=(0.0f + compressor_rate * 0.5f) * m_Width; // de 0.5 Ã  0.0
+		m_Vertices[1][0].position.y=(0.0f + compressor_rate * 0.25f) * m_Height; // de 0.25 Ã  0.0
 
 		m_Vertices[1][1].position.x=1.0f * m_Width;
-		m_Vertices[1][1].position.y=(0.0f + compressor_rate * 0.25f) * m_Height; // de 0.25 à 0.0
+		m_Vertices[1][1].position.y=(0.0f + compressor_rate * 0.25f) * m_Height; // de 0.25 Ã  0.0
 
 		m_Vertices[1][2].position.x=1.f * m_Width;
-		m_Vertices[1][2].position.y=(1.f - compressor_rate * 0.25f) * m_Height; // de 0.75 à 1.0
+		m_Vertices[1][2].position.y=(1.f - compressor_rate * 0.25f) * m_Height; // de 0.75 Ã  1.0
 
-		m_Vertices[1][3].position.x=(0.f + compressor_rate * 0.5f) * m_Width; // de 0.5 à 0.0
-		m_Vertices[1][3].position.y=(1.f - compressor_rate * 0.25f) * m_Height; // de 0.75 à 1.0
+		m_Vertices[1][3].position.x=(0.f + compressor_rate * 0.5f) * m_Width; // de 0.5 Ã  0.0
+		m_Vertices[1][3].position.y=(1.f - compressor_rate * 0.25f) * m_Height; // de 0.75 Ã  1.0
 
 		hr = RenderSurface(1,false);
 		hr = RenderSurface(2,false);
