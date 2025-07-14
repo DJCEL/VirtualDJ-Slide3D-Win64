@@ -82,6 +82,7 @@ HRESULT VDJ_API CSlide3D8::OnDraw(float crossfader)
 
 	memcpy(m_Vertices[0], GetVertices(1), 4 * sizeof(TVertex8));
 	memcpy(m_Vertices[1], GetVertices(2), 4 * sizeof(TVertex8));
+	TVertex8* pDoubleVertices[2] = { m_Vertices[0], m_Vertices[1] };
 
 	// GetTexture() doesn't AddRef(), so we don't need to release later
 	//hr = GetTexture(VdjVideoEngineDirectX11, 1, (void**) &pTextureView1);
@@ -95,7 +96,7 @@ HRESULT VDJ_API CSlide3D8::OnDraw(float crossfader)
 	pD3DDeviceContext->OMGetRenderTargets(1, &pD3DRenderTargetView, nullptr);
 	if (!pD3DRenderTargetView) return S_FALSE;
 	
-	hr = Rendering_D3D11(pD3DDevice, pD3DDeviceContext, pD3DRenderTargetView, crossfader);
+	hr = Rendering_D3D11(pD3DDevice, pD3DDeviceContext, pD3DRenderTargetView, pDoubleVertices, crossfader);
 	if (hr != S_OK) return S_FALSE;
 	
 	return S_OK;
@@ -112,7 +113,7 @@ HRESULT CSlide3D8::Initialize_D3D11(ID3D11Device* pDevice)
 	return S_OK;
 }
 //---------------------------------------------------------------------------------------------
-HRESULT CSlide3D8::Rendering_D3D11(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RenderTargetView* pRenderTargetView, float crossfader)
+HRESULT CSlide3D8::Rendering_D3D11(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RenderTargetView* pRenderTargetView, TVertex8* vertices[2], float crossfader)
 {
 	HRESULT hr=S_FALSE;
 
