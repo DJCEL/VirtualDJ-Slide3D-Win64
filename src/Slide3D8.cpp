@@ -49,7 +49,7 @@ HRESULT VDJ_API CSlide3D8::OnDeviceInit()
 	m_Height = height;
 
 	// GetDevice() doesn't AddRef(), so we don't need to release pD3DDevice later
-	hr = GetDevice(VDJVIDEOENGINE, (void**)&pD3DDevice);
+	hr = GetDevice(VdjVideoEngineDirectX11, (void**)&pD3DDevice);
 	if (hr != S_OK || pD3DDevice == nullptr) return S_FALSE;
 
 
