@@ -23,10 +23,6 @@ class CSlide3D8 : public IVdjPluginVideoTransition8
 		HRESULT VDJ_API OnDraw(float crossfader);
 
 	private:
-		static const EVdjVideoEngine VDJVIDEOENGINE = VdjVideoEngineDirectX11;
-		typedef ID3D11Device VDJVIDEODEVICE;
-		typedef ID3D11ShaderResourceView VDJVIDEOTEXTURE;
-		
 		void OnResizeVideo();
 		HRESULT Compose(float crossfader);
 		HRESULT RenderSurface(int deck, bool bDefault);
