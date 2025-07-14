@@ -72,9 +72,13 @@ HRESULT VDJ_API CSlide3D8::OnDraw(float crossfader)
 		OnResizeVideo();
 	}
 
-
 	memcpy(m_Vertices[0],GetVertices(1),4*sizeof(TVertex8));
 	memcpy(m_Vertices[1],GetVertices(2),4*sizeof(TVertex8));
+
+	//ID3D11ShaderResourceView *pTextureView1 = nullptr;
+	//ID3D11ShaderResourceView *pTextureView2 = nullptr;
+	//hr = GetTexture(VdjVideoEngineDirectX11, 1, (void**) &pTextureView1);
+	//hr = GetTexture(VdjVideoEngineDirectX11, 2, (void**) &pTextureView2);
 
 	hr = Compose(crossfader);
 
