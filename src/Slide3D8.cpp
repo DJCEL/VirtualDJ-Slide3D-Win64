@@ -115,91 +115,92 @@ HRESULT CSlide3D8::Initialize_D3D11(ID3D11Device* pDevice)
 //---------------------------------------------------------------------------------------------
 HRESULT CSlide3D8::Rendering_D3D11(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RenderTargetView* pRenderTargetView, TVertex8* vertices[2], float crossfader)
 {
-	HRESULT hr = S_FALSE;
+	HRESULT hr1 = S_FALSE;
+	HRESULT hr2 = S_FALSE;
 
-float compressor_rate = 0.0f;
-int alpha = 0;
-
-
-if (crossfader<=0.5f)
-{
-	compressor_rate = crossfader / 0.5f;
-	alpha = (int) (compressor_rate * 255.0f);
-
-	// Video 1
-	vertices[0][0].position.x = 0.0f * m_Width;
-	vertices[0][0].position.y = (0.0f + compressor_rate * 0.25f ) * m_Height; // de 0 à 0.25;
-
-	vertices[0][1].position.x = (1.0f - compressor_rate * 0.5f) * m_Width; // de 1 à 0.5
-	vertices[0][1].position.y = (0.0f + compressor_rate * 0.25f) * m_Height; // de 0 à 0.25
-
-	vertices[0][2].position.x = (1.0f - compressor_rate * 0.5f) * m_Width; // de 1 à 0.5
-	vertices[0][2].position.y = (1.0f - compressor_rate * 0.25f) * m_Height; // de 1 à 0.75;
-
-	vertices[0][3].position.x = 0.0f * m_Width ;
-	vertices[0][3].position.y = (1.0f - compressor_rate * 0.25f) * m_Height; // de 1 à 0.75;
-
-	//Video 2
-	vertices[1][0].position.x = 0.5f * m_Width;
-	vertices[1][0].position.y = 0.25f * m_Height;
-	vertices[1][0].color = D3DCOLOR_RGBA(255,255,255,alpha);
-
-	vertices[1][1].position.x = 1.0f * m_Width;
-	vertices[1][1].position.y = 0.25f * m_Height;
-	vertices[1][1].color = D3DCOLOR_RGBA(255,255,255,alpha);
-
-	vertices[1][2].position.x = 1.0f * m_Width;
-	vertices[1][2].position.y = 0.75f * m_Height;
-	vertices[1][2].color = D3DCOLOR_RGBA(255,255,255,alpha);
-
-	vertices[1][3].position.x = 0.5f * m_Width;
-	vertices[1][3].position.y = 0.75f * m_Height;
-	vertices[1][3].color = D3DCOLOR_RGBA(255,255,255,alpha);
-
-	hr = RenderSurface(2,false);
-	hr = RenderSurface(1,false);
-
-}
-else 
-{
-	compressor_rate=(1.0f-crossfader) / 0.5f;
-	alpha = (int) (compressor_rate * 255.0f);
-
-	//Video 1
-	vertices[0][0].position.x=0.0f * m_Width;
-	vertices[0][0].position.y=0.25f * m_Height;
-	vertices[0][0].color = D3DCOLOR_RGBA(255,255,255,alpha);
-
-	vertices[0][1].position.x=0.5f * m_Width;
-	vertices[0][1].position.y=0.25f * m_Height;
-	vertices[0][1].color = D3DCOLOR_RGBA(255,255,255,alpha);
-
-	vertices[0][2].position.x=0.5f * m_Width;
-	vertices[0][2].position.y=0.75f * m_Height;
-	vertices[0][2].color = D3DCOLOR_RGBA(255,255,255,alpha);
-
-	vertices[0][3].position.x=0.0f * m_Width;
-	vertices[0][3].position.y=0.75f * m_Height;
-	vertices[0][3].color = D3DCOLOR_RGBA(255,255,255,alpha);
-
-	// Video 2
-	vertices[1][0].position.x=(0.0f + compressor_rate * 0.5f) * m_Width; // de 0.5 à 0.0
-	vertices[1][0].position.y=(0.0f + compressor_rate * 0.25f) * m_Height; // de 0.25 à 0.0
-
-	vertices[1][1].position.x=1.0f * m_Width;
-	vertices[1][1].position.y=(0.0f + compressor_rate * 0.25f) * m_Height; // de 0.25 à 0.0
-
-	vertices[1][2].position.x=1.f * m_Width;
-	vertices[1][2].position.y=(1.f - compressor_rate * 0.25f) * m_Height; // de 0.75 à 1.0
-
-	vertices[1][3].position.x=(0.f + compressor_rate * 0.5f) * m_Width; // de 0.5 à 0.0
-	vertices[1][3].position.y=(1.f - compressor_rate * 0.25f) * m_Height; // de 0.75 à 1.0
-
-	hr = RenderSurface(1,false);
-	hr = RenderSurface(2,false);
-}
-
-return S_OK;
+	float compressor_rate = 0.0f;
+	int alpha = 0;
+	
+	
+	if (crossfader<=0.5f)
+	{
+		compressor_rate = crossfader / 0.5f;
+		alpha = (int) (compressor_rate * 255.0f);
+	
+		// Video 1
+		vertices[0][0].position.x = 0.0f * m_Width;
+		vertices[0][0].position.y = (0.0f + compressor_rate * 0.25f ) * m_Height; // de 0 à 0.25;
+	
+		vertices[0][1].position.x = (1.0f - compressor_rate * 0.5f) * m_Width; // de 1 à 0.5
+		vertices[0][1].position.y = (0.0f + compressor_rate * 0.25f) * m_Height; // de 0 à 0.25
+	
+		vertices[0][2].position.x = (1.0f - compressor_rate * 0.5f) * m_Width; // de 1 à 0.5
+		vertices[0][2].position.y = (1.0f - compressor_rate * 0.25f) * m_Height; // de 1 à 0.75;
+	
+		vertices[0][3].position.x = 0.0f * m_Width ;
+		vertices[0][3].position.y = (1.0f - compressor_rate * 0.25f) * m_Height; // de 1 à 0.75;
+	
+		//Video 2
+		vertices[1][0].position.x = 0.5f * m_Width;
+		vertices[1][0].position.y = 0.25f * m_Height;
+		vertices[1][0].color = D3DCOLOR_RGBA(255,255,255,alpha);
+	
+		vertices[1][1].position.x = 1.0f * m_Width;
+		vertices[1][1].position.y = 0.25f * m_Height;
+		vertices[1][1].color = D3DCOLOR_RGBA(255,255,255,alpha);
+	
+		vertices[1][2].position.x = 1.0f * m_Width;
+		vertices[1][2].position.y = 0.75f * m_Height;
+		vertices[1][2].color = D3DCOLOR_RGBA(255,255,255,alpha);
+	
+		vertices[1][3].position.x = 0.5f * m_Width;
+		vertices[1][3].position.y = 0.75f * m_Height;
+		vertices[1][3].color = D3DCOLOR_RGBA(255,255,255,alpha);
+	
+		hr2 = RenderSurface(2,false);
+		hr1 = RenderSurface(1,false);
+	
+	}
+	else 
+	{
+		compressor_rate=(1.0f-crossfader) / 0.5f;
+		alpha = (int) (compressor_rate * 255.0f);
+	
+		//Video 1
+		vertices[0][0].position.x=0.0f * m_Width;
+		vertices[0][0].position.y=0.25f * m_Height;
+		vertices[0][0].color = D3DCOLOR_RGBA(255,255,255,alpha);
+	
+		vertices[0][1].position.x=0.5f * m_Width;
+		vertices[0][1].position.y=0.25f * m_Height;
+		vertices[0][1].color = D3DCOLOR_RGBA(255,255,255,alpha);
+	
+		vertices[0][2].position.x=0.5f * m_Width;
+		vertices[0][2].position.y=0.75f * m_Height;
+		vertices[0][2].color = D3DCOLOR_RGBA(255,255,255,alpha);
+	
+		vertices[0][3].position.x=0.0f * m_Width;
+		vertices[0][3].position.y=0.75f * m_Height;
+		vertices[0][3].color = D3DCOLOR_RGBA(255,255,255,alpha);
+	
+		// Video 2
+		vertices[1][0].position.x=(0.0f + compressor_rate * 0.5f) * m_Width; // de 0.5 à 0.0
+		vertices[1][0].position.y=(0.0f + compressor_rate * 0.25f) * m_Height; // de 0.25 à 0.0
+	
+		vertices[1][1].position.x=1.0f * m_Width;
+		vertices[1][1].position.y=(0.0f + compressor_rate * 0.25f) * m_Height; // de 0.25 à 0.0
+	
+		vertices[1][2].position.x=1.f * m_Width;
+		vertices[1][2].position.y=(1.f - compressor_rate * 0.25f) * m_Height; // de 0.75 à 1.0
+	
+		vertices[1][3].position.x=(0.f + compressor_rate * 0.5f) * m_Width; // de 0.5 à 0.0
+		vertices[1][3].position.y=(1.f - compressor_rate * 0.25f) * m_Height; // de 0.75 à 1.0
+	
+		hr1 = RenderSurface(1,false);
+		hr2 = RenderSurface(2,false);
+	}
+	
+	return S_OK;
 }
 //---------------------------------------------------------------------------------------------
 HRESULT CSlide3D8::RenderSurface(int deck, bool bDefaultVertices)
