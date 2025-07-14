@@ -159,7 +159,6 @@ HRESULT CSlide3D8::Rendering_D3D11(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	
 		hr2 = RenderSurface(2,false);
 		hr1 = RenderSurface(1,false);
-	
 	}
 	else 
 	{
