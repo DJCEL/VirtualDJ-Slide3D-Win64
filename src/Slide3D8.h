@@ -4,6 +4,7 @@
 
 #include "VdjVideo8.h"
 #include <D3D11_4.h>
+#include <atlbase.h> //we use atl for the CComPtr smart pointer, but this is optional
 
 #pragma comment (lib, "D3D11.lib")
 
