@@ -48,6 +48,8 @@ enum EVdjVideoEngine
 #define VDJFLAG_VIDEO_NOAUTOACTIVE  0x200000 // The video engine will not be automatically activated when activating this effect (for audio effects with a video option)
 #define VDJFLAG_VIDEO_OUTPUTRESOLUTION 0x400000 // If the effect is applied on deck, the effect will be applied onto the video output resolution instead of the video source resolution
 #define VDJFLAG_VIDEO_OUTPUTASPECTRATIO 0x800000  // If the effect is applied on deck, the effect will be applied in same aspect ratio as video output (and minimum resolution between video source and video output)
+#define VDJFLAG_VIDEO_FORRECORDING		0x1000000 // If the effect is applied on the master, it will be rendered in the record resolution, and after videoskin
+
 
 // For transitions, you need to define in OnGetPluginInfo the behavior of the auto-videocrossfader:
 #define VDJFLAG_VIDEOTRANSITION_CONTINOUS	0x100000 // the crossfader moves continuously from one side to the other
