@@ -36,7 +36,8 @@ enum EVdjVideoEngine
 	VdjVideoEngineDirectX9 = 1,
 	VdjVideoEngineOpenGL = 2,
 	VdjVideoEngineDirectX11 = 3,
-	VdjVideoEngineOpenGLES2 = 4
+	VdjVideoEngineOpenGLES2 = 4,
+        VdjVideoEngineMetal = 5
 };
 
 #define VDJFLAG_VIDEO_MASTERONLY	0x10000
