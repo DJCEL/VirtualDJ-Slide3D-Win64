@@ -218,8 +218,6 @@ HRESULT CSlide3D8::RenderSurface(int deck, bool bDefaultVertices)
 	{
 		VideoScaling(m_Vertices[deck - 1], m_DefaultVertices[deck - 1]);
 		hr = DrawDeck(deck, m_Vertices[deck - 1]);
-
-		memcpy(m_Vertices[deck - 1], m_DefaultVertices[deck - 1], 4 * sizeof(TVertex8));
 	}
 
 	return hr;
