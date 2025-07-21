@@ -257,6 +257,7 @@ void CSlide3D8::VideoScaling(TVertex8* vertices, TVertex8* DefaultVertices)
 
 #ifdef _DEBUG
 	// Get letterBoxing settings
+	HRESULT hr = S_FALSE;
 	double is_letterBoxing_bars = 0.0f;
 	double is_letterBoxing_crop = 0.0f;
 	double is_letterBoxing_zoom = 0.0f;
