@@ -27,7 +27,7 @@ class CSlide3D8 : public IVdjPluginVideoTransition8
 		HRESULT Initialize_D3D11(ID3D11Device* pDevice);
 		HRESULT Rendering_D3D11(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RenderTargetView* pRenderTargetView, TVertex8* vertices[2], float crossfader);
 		HRESULT RenderSurface(int deck, bool bDefaultVertices);
-		void VideoScaling(int deck);
+		void VideoScaling(int deck); // For letterBoxing (bars, crop, zoom)
 
 		ID3D11Device* pD3DDevice;
 		ID3D11DeviceContext* pD3DDeviceContext;
