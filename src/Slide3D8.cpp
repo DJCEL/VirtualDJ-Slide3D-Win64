@@ -72,6 +72,8 @@ HRESULT VDJ_API CSlide3D8::OnDeviceClose()
 HRESULT VDJ_API CSlide3D8::OnDraw(float crossfader)
 {
 	HRESULT hr = S_FALSE;
+	TVertex8* vertices1 = nullptr;
+	TVertex8* vertices2 = nullptr;
 	//ID3D11ShaderResourceView *pTextureView1 = nullptr;
 	//ID3D11ShaderResourceView *pTextureView2 = nullptr;
 
@@ -80,11 +82,15 @@ HRESULT VDJ_API CSlide3D8::OnDraw(float crossfader)
 		OnResizeVideo();
 	}
 
-	memcpy(m_DefaultVertices[0], GetVertices(1), 4 * sizeof(TVertex8));
-	memcpy(m_DefaultVertices[1], GetVertices(2), 4 * sizeof(TVertex8));
-
-	memcpy(m_Vertices[0], m_DefaultVertices[0], 4 * sizeof(TVertex8));
-	memcpy(m_Vertices[1], m_DefaultVertices[1], 4 * sizeof(TVertex8));
+	vertices1 = GetVertices(1);
+	vertices2 = GetVertices(2);
+	if (!vertices1 || !vertices2) return S_FALSE;
+	
+	memcpy(m_DefaultVertices[0], vertices1, 4 * sizeof(TVertex8));
+	memcpy(m_DefaultVertices[1], vertices2, 4 * sizeof(TVertex8));
+	
+	memcpy(m_Vertices[0], vertices1, 4 * sizeof(TVertex8));
+	memcpy(m_Vertices[1], vertices2, 4 * sizeof(TVertex8));
 	TVertex8* pDoubleVertices[2] = { m_Vertices[0], m_Vertices[1] };
 
 	// GetTexture() doesn't AddRef(), so we don't need to release later
@@ -115,6 +121,11 @@ void CSlide3D8::OnResizeVideo()
 HRESULT CSlide3D8::Initialize_D3D11(ID3D11Device* pDevice)
 {
 	return S_OK;
+}
+//-----------------------------------------------------------------------
+void CSlide3D8::Release_D3D11()
+{
+
 }
 //---------------------------------------------------------------------------------------------
 HRESULT CSlide3D8::Rendering_D3D11(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RenderTargetView* pRenderTargetView, TVertex8* vertices[2], float crossfader)
