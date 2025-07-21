@@ -255,6 +255,16 @@ void CSlide3D8::VideoScaling(TVertex8* vertices, TVertex8* DefaultVertices)
 	bool b_CropVideoW,b_CropVideoH;
 	float dx,dy;
 
+#ifdef _DEBUG
+	// Get letterBoxing settings
+	double is_letterBoxing_bars = 0.0f;
+	double is_letterBoxing_crop = 0.0f;
+	double is_letterBoxing_zoom = 0.0f;
+	hr = GetInfo("setting 'letterBoxing' 0", &is_letterBoxing_bars);
+	hr = GetInfo("setting 'letterBoxing' 1", &is_letterBoxing_crop);
+	hr = GetInfo("setting 'letterBoxing' 2", &is_letterBoxing_zoom);
+#endif
+
 	WidthOriginalVideo = DefaultVertices[1].position.x - DefaultVertices[0].position.x;
 	HeightOriginalVideo = DefaultVertices[3].position.y - DefaultVertices[0].position.y;
 
