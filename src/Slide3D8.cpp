@@ -74,8 +74,8 @@ HRESULT VDJ_API CSlide3D8::OnDraw(float crossfader)
 	HRESULT hr = S_FALSE;
 	TVertex8* vertices1 = nullptr;
 	TVertex8* vertices2 = nullptr;
-	//ID3D11ShaderResourceView *pTextureView1 = nullptr;
-	//ID3D11ShaderResourceView *pTextureView2 = nullptr;
+	ID3D11ShaderResourceView *pTextureView1 = nullptr;
+	ID3D11ShaderResourceView *pTextureView2 = nullptr;
 
 	if (width != m_Width || height != m_Height)
 	{
@@ -94,9 +94,11 @@ HRESULT VDJ_API CSlide3D8::OnDraw(float crossfader)
 	TVertex8* pDoubleVertices[2] = { m_Vertices[0], m_Vertices[1] };
 
 	// GetTexture() doesn't AddRef(), so we don't need to release later
-	//hr = GetTexture(VdjVideoEngineDirectX11, 1, (void**) &pTextureView1);
-	//hr = GetTexture(VdjVideoEngineDirectX11, 2, (void**) &pTextureView2);
-	//ID3D11ShaderResourceView* pDoubleTextureView[2] = { pTextureView1, pTextureView2 };
+	hr = GetTexture(VdjVideoEngineDirectX11, 1, (void**) &pTextureView1);
+	if (hr != S_OK) return S_FALSE;
+	hr = GetTexture(VdjVideoEngineDirectX11, 2, (void**) &pTextureView2);
+	if (hr != S_OK) return S_FALSE;
+	ID3D11ShaderResourceView* pDoubleTextureView[2] = { pTextureView1, pTextureView2 };
 
 	if (!pD3DDevice) return S_FALSE;
 
@@ -106,7 +108,7 @@ HRESULT VDJ_API CSlide3D8::OnDraw(float crossfader)
 	pD3DDeviceContext->OMGetRenderTargets(1, &pD3DRenderTargetView, nullptr);
 	if (!pD3DRenderTargetView) return S_FALSE;
 	
-	hr = Rendering_D3D11(pD3DDevice, pD3DDeviceContext, pD3DRenderTargetView, pDoubleVertices, crossfader);
+	hr = Rendering_D3D11(pD3DDevice, pD3DDeviceContext, pD3DRenderTargetView,  pDoubleTextureView, pDoubleVertices, crossfader);
 	if (hr != S_OK) return S_FALSE;
 	
 	return S_OK;
@@ -128,10 +130,20 @@ void CSlide3D8::Release_D3D11()
 
 }
 //---------------------------------------------------------------------------------------------
-HRESULT CSlide3D8::Rendering_D3D11(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RenderTargetView* pRenderTargetView, TVertex8* vertices[2], float crossfader)
+HRESULT CSlide3D8::Rendering_D3D11(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RenderTargetView* pRenderTargetView, ID3D11ShaderResourceView* pTextureView[2], TVertex8* vertices[2], float crossfader)
 {
 	HRESULT hr1 = S_FALSE;
 	HRESULT hr2 = S_FALSE;
+
+#ifdef _DEBUG
+	HRESULT hr = S_FALSE;
+	InfoTexture2D InfoRTV = {};
+	InfoTexture2D InfoSRV1 = {};
+	InfoTexture2D InfoSRV2 = {};
+	hr = GetInfoFromRenderTargetView(pRenderTargetView, &InfoRTV);
+	hr = GetInfoFromShaderResourceView(pTextureView[0], &InfoSRV1);
+	hr = GetInfoFromShaderResourceView(pTextureView[1], &InfoSRV2);
+#endif
 
 	float compressor_rate = 0.0f;
 	int alpha = 0;
