@@ -4,10 +4,8 @@
 
 #include "VdjVideo8.h"
 #include <d3d11.h>
-#include <atlbase.h> //we use atl for the CComPtr smart pointer, but this is optional
 
-#pragma comment (lib, "D3D11.lib")
-
+#pragma comment (lib, "d3d11.lib")
 
 //-------------------------------------------------------------------------------------------
 class CSlide3D8 : public IVdjPluginVideoTransition8
@@ -41,10 +39,6 @@ class CSlide3D8 : public IVdjPluginVideoTransition8
 	
 		#ifndef SAFE_RELEASE
 		#define SAFE_RELEASE(p) { if (p) { (p)->Release(); (p)=NULL; } }
-		#endif
-
-		#ifndef SAFE_RELEASE_CCOMPTR
-		#define SAFE_RELEASE_CCOMPTR(x) { if (x!=nullptr) { x.Release(); x=nullptr; } }
 		#endif
 
 		typedef DWORD D3DCOLOR;
